@@ -549,15 +549,15 @@ body.sidebar-collapsed .sidebar-toggle:focus-visible .sidebar-toggle-icon {
 }
 
 #topic1-vis-scatter svg,
-#topic1-vis-bars svg,
 #topic1-vis-continent-bubbles svg {
   display: block;
 }
 
 .continent-bubble-slot {
-  min-height: 640px;
+  min-height: 740px;
   background: #f8fbfd;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .continent-bubble-slot svg {

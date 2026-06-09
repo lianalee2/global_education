@@ -1605,177 +1605,6 @@ function renderTopic1ScatterChart() {
   );
 }
 
-function renderTopic1BarChart() {
-  const cId = "#topic1-vis-bars";
-  const container = d3.select(cId);
-  container.html("");
-
-  const node = container.node();
-  const width = Math.max(node.getBoundingClientRect().width, 420);
-  const height = Math.max(node.getBoundingClientRect().height, 400);
-  const margin = { top: 70, right: 40, bottom: 36, left: 100 };
-  const iw = width - margin.left - margin.right;
-  const ih = height - margin.top - margin.bottom;
-
-  let candidates = getTopic1TeacherStageRows();
-
-  const topGap = candidates.slice(0, 10);
-  const keyCodes = new Set([
-    "USA",
-    "IND",
-  ]);
-  const extras = candidates.filter(
-    (d) => keyCodes.has(d.code) && !topGap.find((t) => t.code === d.code),
-  );
-  let chartData = [...topGap, ...extras].slice(0, 12);
-  chartData.sort((a, b) => b.gap - a.gap);
-
-  if (chartData.length === 0) {
-    container
-      .append("div")
-      .attr("class", "chart-loading")
-      .text("数据不足，无法展示");
-    return;
-  }
-
-  const svg = container
-    .append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .style("display", "block");
-  const chartArea = svg
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
-
-  const xScale = d3.scaleLinear().domain([0, 105]).range([0, iw]);
-  const yScale = d3
-    .scaleBand()
-    .domain(chartData.map((d) => d.name))
-    .range([0, ih])
-    .padding(0.35);
-
-  chartArea
-    .append("g")
-    .attr("class", "grid")
-    .attr("transform", `translate(0, ${ih})`)
-    .call(d3.axisBottom(xScale).ticks(5).tickSize(-ih).tickFormat(""))
-    .call((ag) => ag.select(".domain").remove())
-    .selectAll("line")
-    .attr("stroke", VIS.grid)
-    .attr("stroke-width", 1);
-
-  chartArea
-    .append("g")
-    .attr("transform", `translate(0, ${ih})`)
-    .call(
-      d3
-        .axisBottom(xScale)
-        .ticks(5)
-        .tickFormat((d) => d + "%"),
-    )
-    .call(styleAxis);
-
-  chartArea
-    .append("g")
-    .call(d3.axisLeft(yScale))
-    .call(styleAxis);
-
-  chartArea
-    .append("text")
-    .attr("x", iw / 2)
-    .attr("y", ih + 28)
-    .attr("text-anchor", "middle")
-    .style("font-size", "11px")
-    .style("fill", "#475569")
-    .text("受训教师比例 (%)");
-
-  const colors = {
-    preprimary: VIS.teacher.preprimary,
-    primary: VIS.teacher.primary,
-    secondary: VIS.teacher.secondary,
-  };
-  const keys = ["preprimary", "primary", "secondary"];
-  const labels = { preprimary: "学前", primary: "小学", secondary: "中学" };
-
-  const legendG = chartArea
-    .append("g")
-    .attr("transform", "translate(0, -44)");
-
-  keys.forEach((key, i) => {
-    const legendItem = legendG
-      .append("g")
-      .attr("transform", `translate(${i * 74}, 0)`);
-    legendItem
-      .append("circle")
-      .attr("cx", 0)
-      .attr("cy", 8)
-      .attr("r", 5)
-      .attr("fill", colors[key]);
-    legendItem
-      .append("text")
-      .attr("x", 12)
-      .attr("y", 12)
-      .style("font-size", "11px")
-      .style("fill", "#475569")
-      .text(labels[key]);
-  });
-
-  chartArea
-    .append("text")
-    .attr("x", 0)
-    .attr("y", -18)
-    .style("font-size", "10px")
-    .style("fill", "#64748b")
-    .style("font-weight", "650")
-    .text(
-      `展示口径：${candidates.length} 个三阶段数据完整国家中，取学前-小学差距最大的 10 个，并补充美国、印度作参照`,
-    );
-
-  chartArea
-    .selectAll(".line-pp-pr")
-    .data(chartData)
-    .enter()
-    .append("line")
-    .attr("class", "line-pp-pr")
-    .attr("x1", (d) => xScale(d.preprimary))
-    .attr("x2", (d) => xScale(d.primary))
-    .attr("y1", (d) => yScale(d.name) + yScale.bandwidth() / 2)
-    .attr("y2", (d) => yScale(d.name) + yScale.bandwidth() / 2)
-    .attr("stroke", (d) =>
-      d.gap > 30 ? "#ef4444" : d.gap > 15 ? "#f59e0b" : "#10b981",
-    )
-    .attr("stroke-width", 2.5)
-    .attr("opacity", 0.6);
-
-  keys.forEach((key) => {
-    chartArea
-      .selectAll(`.dot-${key}`)
-      .data(chartData)
-      .enter()
-      .append("circle")
-      .attr("class", `dot-${key}`)
-      .attr("cx", (d) => xScale(d[key]))
-      .attr("cy", (d) => yScale(d.name) + yScale.bandwidth() / 2)
-      .attr("r", 5.5)
-      .attr("fill", colors[key])
-      .attr("stroke", "#fff")
-      .attr("stroke-width", 1.5)
-      .attr("opacity", 0.9)
-      .on("mouseover", function (ev, d) {
-        d3.select(this).attr("r", 8);
-        showTooltip(
-          ev,
-          `<div style="font-weight:600">${d.name}</div><div><span style="color:${colors.preprimary}">●</span> 学前：${formatRate(d.preprimary)}%</div><div><span style="color:${colors.primary}">●</span> 小学：${formatRate(d.primary)}%</div><div><span style="color:${colors.secondary}">●</span> 中学：${formatRate(d.secondary)}%</div>`,
-        );
-      })
-      .on("mousemove", moveTooltip)
-      .on("mouseout", function () {
-        d3.select(this).attr("r", 5.5);
-        hideTooltip();
-      });
-  });
-}
-
 function getTopic1TeacherStageRows() {
   return Topic1Store.allCountries
     .filter((d) => d.primary && d.preprimary && d.secondary && d.expend)
@@ -1814,7 +1643,7 @@ function renderTopic1ContinentBubblePreview() {
 
   const node = container.node();
   const width = Math.max(node.getBoundingClientRect().width, 720);
-  const height = width >= 920 ? 660 : 720;
+  const height = width >= 920 ? 760 : 780;
   const stages = [
     { key: "preprimary", label: "学前" },
     { key: "primary", label: "小学" },
@@ -1854,7 +1683,7 @@ function renderTopic1ContinentBubblePreview() {
     .attr("height", height)
     .style("display", "block");
 
-  const topMargin = { top: 72, right: 48, bottom: 26, left: 96 };
+  const topMargin = { top: 124, right: 48, bottom: 26, left: 96 };
   const topH = Math.min(270, Math.max(230, height * 0.4));
   const topW = width - topMargin.left - topMargin.right;
   const bubbleG = svg
@@ -1877,7 +1706,7 @@ function renderTopic1ContinentBubblePreview() {
     .style("font-size", "11px")
     .style("font-weight", "650")
     .style("fill", "#64748b")
-    .text(`气泡大小代表完整数据国家数，共 ${rows.length} 个国家；点击大洲查看国家线图`);
+    .text(`完整样本 ${rows.length} 个国家；点击气泡查看国家线图`);
 
   const xBubble = d3
     .scalePoint()
@@ -2005,8 +1834,19 @@ function renderTopic1ContinentBubblePreview() {
     .style("fill", (d) => (d.mean >= 70 ? "#fff" : "#1e3a8a"))
     .text((d) => d.count);
 
-  const legendX = width - 230;
-  const legendY = 28;
+  const legendX = Math.max(width - 220, 360);
+  const legendY = 30;
+  svg
+    .append("rect")
+    .attr("x", legendX - 12)
+    .attr("y", legendY - 18)
+    .attr("width", 188)
+    .attr("height", 58)
+    .attr("rx", 8)
+    .attr("fill", "#f8fbfd")
+    .attr("fill-opacity", 0.96)
+    .attr("stroke", "#e0ebf5")
+    .attr("stroke-width", 1);
   svg
     .append("text")
     .attr("x", legendX)
@@ -2058,7 +1898,7 @@ function renderTopic1ContinentBubblePreview() {
     .slice()
     .sort((a, b) => d3.descending(Math.max(a.gap, 0), Math.max(b.gap, 0)));
   const lineMargin = { top: 64, right: 44, bottom: 52, left: 72 };
-  const lineTop = topMargin.top + topH + 72;
+  const lineTop = topMargin.top + topH + 112;
   const lineW = width - lineMargin.left - lineMargin.right;
   const lineH = height - lineTop - lineMargin.bottom;
 
@@ -2066,14 +1906,14 @@ function renderTopic1ContinentBubblePreview() {
     .append("line")
     .attr("x1", 24)
     .attr("x2", width - 24)
-    .attr("y1", lineTop - 34)
-    .attr("y2", lineTop - 34)
+    .attr("y1", lineTop - 70)
+    .attr("y2", lineTop - 70)
     .attr("stroke", "#dbe8f4");
 
   svg
     .append("text")
     .attr("x", 24)
-    .attr("y", lineTop - 12)
+    .attr("y", lineTop - 44)
     .style("font-size", "15px")
     .style("font-weight", "850")
     .style("fill", Topic1ContinentColors[selected] || "#0f172a")
@@ -2082,7 +1922,7 @@ function renderTopic1ContinentBubblePreview() {
   svg
     .append("text")
     .attr("x", 24)
-    .attr("y", lineTop + 10)
+    .attr("y", lineTop - 22)
     .style("font-size", "11px")
     .style("font-weight", "650")
     .style("fill", "#64748b")
@@ -2202,7 +2042,7 @@ function renderTopic1(geoFeatures) {
   if (!geoFeatures) {
     document
       .querySelectorAll(
-        "#topic1-vis-map, #topic1-vis-ranking, #topic1-vis-scatter, #topic1-vis-bars, #topic1-vis-continent-bubbles",
+        "#topic1-vis-map, #topic1-vis-ranking, #topic1-vis-scatter, #topic1-vis-continent-bubbles",
       )
       .forEach((el) => {
         el.innerHTML =
@@ -2212,7 +2052,6 @@ function renderTopic1(geoFeatures) {
   }
   renderTopic1MapChart(geoFeatures);
   renderTopic1ScatterChart();
-  renderTopic1BarChart();
   renderTopic1ContinentBubblePreview();
 }
 
@@ -2222,7 +2061,6 @@ function scheduleTopic1LayoutRefresh() {
   topic1LayoutTimer = setTimeout(() => {
     if (!Topic1Store.allCountries || Topic1Store.allCountries.length === 0) return;
     renderTopic1ScatterChart();
-    renderTopic1BarChart();
     renderTopic1ContinentBubblePreview();
   }, 320);
 }
