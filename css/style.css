@@ -831,6 +831,21 @@ body.sidebar-collapsed .full-bleed-vis {
   font-size: 0.9rem;
   color: #444444;
   font-weight: 600;
+  cursor: pointer;
+  transition:
+    opacity 0.18s ease,
+    transform 0.18s ease,
+    color 0.18s ease;
+}
+
+.scatter-legend-item:hover,
+.scatter-legend-item:focus-visible {
+  opacity: 1 !important;
+  transform: translateY(-1px);
+}
+
+.scatter-legend-item.is-active {
+  color: #102033;
 }
 
 .scatter-legend-dot {

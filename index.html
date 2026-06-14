@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>全球教育平等 | Global Education Equity</title>
-  <link rel="stylesheet" href="css/style.css?v=topic1-continent-bubble-preview-20260609">
+  <link rel="stylesheet" href="css/style.css?v=topic3-legend-filter-20260614">
   <script src="https://d3js.org/d3.v7.min.js"></script>
   <script src="https://unpkg.com/topojson-client@3"></script>
 </head>
@@ -64,7 +64,7 @@
             <h2>全球教育经费投入分布</h2>
             <p>
               地图展示各国教育支出占 GDP 的比例。颜色越深，说明该国对教育的宏观资金投入力度越大。
-              右侧排行榜可以切换查看投入最高和最低的国家。
+              右侧排行榜可以切换查看投入最高和最低的国家（或地区）。
             </p>
           </div>
         </div>
@@ -114,8 +114,8 @@
         <div class="insight-box">
           <h3>结论</h3>
           <p>
-            图中每个点代表一个国家。X 轴是教育支出占 GDP 的比例，Y 轴是受训教师比例。
-            左上方为「低投入·高师资」国家，右下方为「高投入·低师资」国家——这些地区的经费投入可能未能有效转化为师资培训质量。
+            图中每个点代表一个国家（或地区）。X 轴是教育支出占 GDP 的比例，Y 轴是受训教师比例。
+            左上方为「低投入·高师资」国家（或地区），右下方为「高投入·低师资」国家（或地区）——这些地区的经费投入可能未能有效转化为师资培训质量。
           </p>
         </div>
       </div>
@@ -129,13 +129,13 @@
             <!-- <span class="step-number">02</span> -->
             <h2>各教育阶段的师资配置</h2>
             <p>
-              从学前到中学，各国受训教师比例在不同阶段呈现怎样的格局？哪些国家的师资配置在不同阶段较为均衡，哪些存在明显短板？
+              从学前到中学，各国受训教师比例在不同阶段呈现怎样的格局？哪些国家（或地区）的师资配置在不同阶段较为均衡，哪些存在明显短板？
             </p>
             <p>
-              下方气泡图先按大洲汇总所有三阶段数据完整的国家：气泡越大，代表该大洲纳入比较的国家越多；颜色越深，代表该阶段平均受训教师比例越高。
+              下方气泡图先按大洲汇总所有三阶段数据完整的国家（或地区）：气泡越大，代表该大洲纳入比较的国家（或地区）越多；颜色越深，代表该阶段平均受训教师比例越高。
             </p>
             <p>
-              点击任一大洲气泡后，可以在下方固定查看该大洲各国家从学前、小学到中学的变化线，既保留全部国家样本，又避免一次性展示过多国家名称造成拥挤。
+              点击任一大洲气泡后，可以在下方固定查看该大洲各国家（或地区）从学前、小学到中学的变化线，既保留全部国家（或地区）样本，又避免一次性展示过多国家（或地区）名称造成拥挤。
             </p>
           </div>
         </div>
@@ -143,7 +143,7 @@
           <div class="chart-wrapper continent-bubble-preview-wrapper">
             <div class="chart-header">
               <span class="chart-title">大洲师资配置气泡图</span>
-              <div class="view-mode-indicator">气泡汇总全部完整样本，点击大洲查看国家线图</div>
+              <div class="view-mode-indicator">气泡汇总全部完整样本，点击大洲查看国家（或地区）线图</div>
             </div>
             <div id="topic1-vis-continent-bubbles" class="d3-canvas-slot continent-bubble-slot"><div class="chart-loading">气泡图加载中...</div></div>
           </div>
@@ -158,11 +158,11 @@
         <div style="max-width:900px;margin:0 auto;text-align:left;">
           <div class="insight-box" style="margin-top:32px;">
             <h3>经费投入与师资质量的「脱钩」现象</h3>
-            <p>较高的教育支出并不必然带来更高的受训教师比例。部分中高收入国家的教育支出占 GDP 比例较高，但受训教师比例并未相应领先；而一些低收入国家虽然投入有限，却在师资培训方面表现突出，说明资金的使用效率与分配方式同样重要。</p>
+            <p>较高的教育支出并不必然带来更高的受训教师比例。部分中高收入国家（或地区）的教育支出占 GDP 比例较高，但受训教师比例并未相应领先；而一些低收入国家（或地区）虽然投入有限，却在师资培训方面表现突出，说明资金的使用效率与分配方式同样重要。</p>
           </div>
           <div class="insight-box" style="margin-top:20px;">
             <h3>学前教育师资是普遍短板</h3>
-            <p>相比于小学和中学，学前教育的受训教师比例在许多国家显著偏低，这一现象在发展中国家尤为突出，反映了全球学前教育师资培训投入的整体不足。</p>
+            <p>相比于小学和中学，学前教育的受训教师比例在许多国家（或地区）显著偏低，这一现象在发展中国家（或地区）尤为突出，反映了全球学前教育师资培训投入的整体不足。</p>
           </div>
         </div>
       </div>
@@ -183,7 +183,7 @@
             <h2>小学适龄儿童失学率</h2>
             <p>
               地图展示各国小学适龄儿童的失学率。颜色越深，说明仍未进入学校的儿童比例越高；
-              右侧排行可以切换查看失学率较高或较低的国家。
+              右侧排行可以切换查看失学率较高或较低的国家（或地区）。
             </p>
             <div class="control-panel">
               <label class="control-label">查看对象</label>
@@ -234,8 +234,8 @@
               GPI 接近 1 表示两性大体平衡，低于 1 表示女性相对较少，高于 1 表示女性相对较多。
             </p>
             <p>
-              图中多数国家的小学阶段 GPI 接近 1，说明基础教育入口的性别差距相对有限；
-              到高等教育阶段，点位分布明显拉开，部分国家女性占比更高，也有一些国家仍低于平衡线，显示性别差异会随教育阶段变化。
+              图中多数国家（或地区）的小学阶段 GPI 接近 1，说明基础教育入口的性别差距相对有限；
+              到高等教育阶段，点位分布明显拉开，部分国家（或地区）女性占比更高，也有一些国家（或地区）仍低于平衡线，显示性别差异会随教育阶段变化。
             </p>
           </div>
         </div>
@@ -254,7 +254,7 @@
         <div id="topic2-vis-step3-detail" class="detail-overlay-panel hidden">
           <button class="close-btn" id="topic2-close-detail-btn">✕</button>
           <div class="detail-header">
-            <h3 id="topic2-detail-country-title">请点击地图上的国家</h3>
+            <h3 id="topic2-detail-country-title">请点击地图上的国家（或地区）</h3>
             <p class="detail-subtitle">初等教育与高等教育完成率的历史变化</p>
             <p class="detail-note">说明：小学完成率按“最终年级新入学人数 / 该年级理论入学年龄人口”计算，是毛代理指标；超过 100% 通常反映超龄、留级、跨境入学或人口估计差异。</p>
           </div>
@@ -263,10 +263,10 @@
       </div>
       <div class="scrolling-text-overlay">
         <div class="text-step step3-prompt is-hidden">
-          <h2>点击国家查看完成率</h2>
-          <p>选择地图上的国家，查看小学完成率与高等教育完成率的历史变化。</p>
+          <h2>点击国家（或地区）查看完成率</h2>
+          <p>选择地图上的国家（或地区），查看小学完成率与高等教育完成率的历史变化。</p>
           <div class="instruction-card">
-            <strong>指标口径：</strong>小学完成率不是追踪同一届学生的毕业率，而是最终年级新入学人数相对于理论入学年龄人口的比例。因此，100% 以上并不一定是数据错误，常见于超龄、留级、跨境生或人口基数偏小的国家和地区。
+            <strong>指标口径：</strong>小学完成率不是追踪同一届学生的毕业率，而是最终年级新入学人数相对于理论入学年龄人口的比例。因此，100% 以上并不一定是数据错误，常见于超龄、留级、跨境生或人口基数偏小的国家（或地区）。
           </div>
         </div>
         <div class="scroll-spacer"></div>
@@ -280,11 +280,11 @@
         <div style="max-width:900px;margin:0 auto;text-align:left;">
           <div class="insight-box" style="margin-top:32px;">
             <h3>小学入学性别差距显著缩小</h3>
-            <p>全球范围内，小学阶段的性别平等取得了显著进展，多数国家的 GPI 接近 1，表明男孩和女孩在基础教育入口处的机会差距正在缩小。</p>
+            <p>全球范围内，小学阶段的性别平等取得了显著进展，多数国家（或地区）的 GPI 接近 1，表明男孩和女孩在基础教育入口处的机会差距正在缩小。</p>
           </div>
           <div class="insight-box" style="margin-top:20px;">
             <h3>高等教育阶段性别差异多样化</h3>
-            <p>到高等教育阶段，性别差异呈现多样化格局：部分国家女性占比显著高于男性，而在另一些国家，女性接受高等教育的机会仍然落后。</p>
+            <p>到高等教育阶段，性别差异呈现多样化格局：部分国家（或地区）女性占比显著高于男性，而在另一些国家（或地区），女性接受高等教育的机会仍然落后。</p>
           </div>
         </div>
       </div>
@@ -301,20 +301,20 @@
       <div class="narrative-center">
         <!-- <span class="step-number">04</span> -->
         <h2>学习贫困与学习调整学年</h2>
-        <p>结合学习贫困率和学习调整学年（LAYS）两个关键指标，全面评估各国教育质量。</p>
+        <p>结合学习贫困率和学习调整学年（LAYS）两个关键指标，全面评估各国（或地区）教育质量。</p>
       </div>
 
       <!-- 控制栏 -->
       <div class="chart-wrapper control-wrapper" style="margin-bottom:32px;">
         <div class="control-strip">
           <div class="control-field">
-            <label>高亮国家：</label>
+            <label>高亮国家（或地区）：</label>
             <div class="country-search" id="topic3-countrySearch">
-              <input id="topic3-countrySearchInput" class="country-search-input" type="search" autocomplete="off" placeholder="搜索国家名称（可多选）">
+              <input id="topic3-countrySearchInput" class="country-search-input" type="search" autocomplete="off" placeholder="搜索国家（或地区）名称（可多选）">
               <div id="topic3-countrySearchResults" class="country-search-results hidden"></div>
             </div>
             <select id="topic3-countrySelect" class="form-select visually-hidden-select" aria-hidden="true" tabindex="-1" multiple>
-              <option value="">-- 选择国家 --</option>
+              <option value="">-- 选择国家（或地区） --</option>
             </select>
           </div>
           <div class="control-field">
@@ -385,11 +385,11 @@
         <div style="max-width:900px;margin:0 auto;text-align:left;">
           <div class="insight-box" style="margin-top:32px;">
             <h3>入学不等于学习</h3>
-            <p>即使儿童能够进入学校，也不意味着他们能够获得有效的学习。学习贫困率揭示了这一严峻现实：许多国家虽然入学率有所提升，但教育质量仍待提高。</p>
+            <p>即使儿童能够进入学校，也不意味着他们能够获得有效的学习。学习贫困率揭示了这一严峻现实：许多国家（或地区）虽然入学率有所提升，但教育质量仍待提高。</p>
           </div>
           <div class="insight-box" style="margin-top:20px;">
             <h3>真实人力资本差距巨大</h3>
-            <p>学习调整学年（LAYS）指标显示，考虑学习质量后，国家间的人力资本差距比单纯的受教育年限差距更为显著。这凸显了提高教育质量的紧迫性。</p>
+            <p>学习调整学年（LAYS）指标显示，考虑学习质量后，国家（或地区）间的人力资本差距比单纯的受教育年限差距更为显著。这凸显了提高教育质量的紧迫性。</p>
           </div>
         </div>
       </div>
@@ -404,6 +404,6 @@
       </div>
     </footer>
   </div>
-  <script src="js/main.js?v=topic1-continent-bubble-preview-20260609"></script>
+  <script src="js/main.js?v=topic3-real-region-legend-20260614"></script>
 </body>
 </html>

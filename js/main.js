@@ -1096,8 +1096,8 @@ function renderTopic1MapChart(geoFeatures) {
 
     rankTitle.text(
       rankMode === "high"
-        ? "教育支出最高的 10 个国家/地区"
-        : "教育支出最低的 10 个国家/地区",
+        ? "教育支出最高的 10 个国家（或地区）"
+        : "教育支出最低的 10 个国家（或地区）",
     );
     const mx = d3.max(sorted, (d) => d.value) || 1;
     xRScale.domain([0, mx * 1.15]).nice();
@@ -1706,7 +1706,7 @@ function renderTopic1ContinentBubblePreview() {
     .style("font-size", "11px")
     .style("font-weight", "650")
     .style("fill", "#64748b")
-    .text(`完整样本 ${rows.length} 个国家；点击气泡查看国家线图`);
+    .text(`完整样本 ${rows.length} 个国家（或地区）；点击气泡查看国家（或地区）线图`);
 
   const xBubble = d3
     .scalePoint()
@@ -1805,7 +1805,7 @@ function renderTopic1ContinentBubblePreview() {
       d3.select(this).attr("fill-opacity", 1).attr("stroke-width", 2.6);
       showTooltip(
         ev,
-        `<div style="font-weight:700">${d.continent} · ${d.label}</div><div>国家数：${d.count}</div><div>平均值：${formatRate(d.mean)}%</div><div>中位数：${formatRate(d.median)}%</div><div>范围：${formatRate(d.min)}% - ${formatRate(d.max)}%</div><div style="margin-top:4px;color:#64748b">点击固定该大洲线图</div>`,
+        `<div style="font-weight:700">${d.continent} · ${d.label}</div><div>国家（或地区）数：${d.count}</div><div>平均值：${formatRate(d.mean)}%</div><div>中位数：${formatRate(d.median)}%</div><div>范围：${formatRate(d.min)}% - ${formatRate(d.max)}%</div><div style="margin-top:4px;color:#64748b">点击固定该大洲线图</div>`,
       );
     })
     .on("mousemove", moveTooltip)
@@ -1917,7 +1917,7 @@ function renderTopic1ContinentBubblePreview() {
     .style("font-size", "15px")
     .style("font-weight", "850")
     .style("fill", Topic1ContinentColors[selected] || "#0f172a")
-    .text(`${selected}国家阶段变化线图`);
+    .text(`${selected}国家（或地区）阶段变化线图`);
 
   svg
     .append("text")
@@ -1926,7 +1926,7 @@ function renderTopic1ContinentBubblePreview() {
     .style("font-size", "11px")
     .style("font-weight", "650")
     .style("fill", "#64748b")
-    .text(`共 ${selectedRows.length} 个完整样本国家；每条线代表一个国家，悬停可查看明细`);
+    .text(`共 ${selectedRows.length} 个完整样本国家（或地区）；每条线代表一个国家（或地区），悬停可查看明细`);
 
   const lineG = svg
     .append("g")
@@ -2079,6 +2079,7 @@ const Topic2Store = {
   step3CompletionByCountry: new Map(),
   step3MapLatest: new Map(),
 };
+const TOPIC2_STEP3_EXCLUDED_CODES = new Set(["TWN"]);
 
 async function loadTopic2Data() {
   try {
@@ -2245,7 +2246,7 @@ function buildStep3CompletionData(csvCompPrim, csvCompTert) {
       const value = parseFloat(row["OBS_VALUE"]);
       const status = (row["OBS_STATUS"] || "A").trim();
 
-      if (!code || NON_COUNTRY_CODES.has(code)) return;
+      if (!code || NON_COUNTRY_CODES.has(code) || TOPIC2_STEP3_EXCLUDED_CODES.has(code)) return;
       if (isNaN(year) || isNaN(value) || value < 0) return;
       if (status !== "A") return;
 
@@ -2264,7 +2265,7 @@ function buildStep3CompletionData(csvCompPrim, csvCompTert) {
       const year = parseInt(row["TIME_PERIOD"]);
       const value = parseFloat(row["OBS_VALUE"]);
 
-      if (!code || NON_COUNTRY_CODES.has(code)) return;
+      if (!code || NON_COUNTRY_CODES.has(code) || TOPIC2_STEP3_EXCLUDED_CODES.has(code)) return;
       if (isNaN(year) || isNaN(value) || value < 0) return;
 
       const e = ensureEntry(code);
@@ -2889,8 +2890,8 @@ function renderTopic2MapChart(geoFeatures) {
 
     rankTitle.text(
       rankMode === "high"
-        ? "失学率较高的 10 个国家/地区"
-        : "失学率较低的 10 个国家/地区",
+        ? "失学率较高的 10 个国家（或地区）"
+        : "失学率较低的 10 个国家（或地区）",
     );
     const maxRankVal = d3.max(rankRows, (d) => d[dim].value) || 1;
     xScale.domain([0, maxRankVal * 1.15]).nice();
@@ -3101,8 +3102,8 @@ function renderTopic2ButterflyChart() {
   const select = controls
     .append("select")
     .attr("class", "butterfly-select")
-    .attr("aria-label", "选择国家进行比较");
-  select.append("option").attr("value", "").text("选择国家");
+    .attr("aria-label", "选择国家（或地区）进行比较");
+  select.append("option").attr("value", "").text("选择国家（或地区）");
   Topic2Store.butterflyPool.forEach((d) => {
     select
       .append("option")
@@ -3147,7 +3148,7 @@ function renderTopic2ButterflyChart() {
 
   const chips = container.append("div").attr("class", "butterfly-selected-list");
   if (selectedDataset.length === 0) {
-    chips.append("span").attr("class", "butterfly-empty-state").text("当前展示随机国家，可添加指定国家进行比较");
+    chips.append("span").attr("class", "butterfly-empty-state").text("当前展示随机国家（或地区），可添加指定国家（或地区）进行比较");
   } else {
     selectedDataset.forEach((d) => {
       const chip = chips.append("button").attr("class", "butterfly-chip").attr("type", "button");
@@ -3684,31 +3685,8 @@ function initStep3Interactions(geoFeatures) {
         : "default";
     })
     .on("mouseover", function (ev, d) {
-      const code = codeOf(d);
-      if (!code) return;
-      const val = latestMap.get(code);
-      const name = getCountryName(code, code);
       d3.select(this).attr("stroke", "#1e293b").attr("stroke-width", 1.8);
-      tooltip
-        .interrupt()
-        .html(
-          `<div style="font-weight:700;margin-bottom:4px">${name}</div>` +
-            (val != null
-              ? `<div>小学完成率：<span style="color:#4ade80;font-weight:bold">${val.toFixed(1)}%</span></div>`
-              : `<div style="color:#94a3b8">暂无数据</div>`) +
-            (val != null && val > 100
-              ? `<div style="font-size:11px;color:#fbbf24;margin-top:4px">超过 100% 多与超龄、留级、跨境入学或人口估计差异有关</div>`
-              : "") +
-            `<div style="font-size:11px;color:#94a3b8;margin-top:4px">点击查看多指标历年趋势</div>`,
-        )
-        .style("left", ev.clientX + 16 + "px")
-        .style("top", ev.clientY - 10 + "px")
-        .style("opacity", "1");
-    })
-    .on("mousemove", (ev) => {
-      tooltip
-        .style("left", ev.clientX + 16 + "px")
-        .style("top", ev.clientY - 10 + "px");
+      tooltip.style("opacity", "0");
     })
     .on("mouseout", function () {
       d3.select(this).attr("stroke", "#fff").attr("stroke-width", 0.5);
@@ -4100,6 +4078,7 @@ const Topic3Store = {
   currentHighlights: [],
   currentColorBy: "region",
   countryOptions: [],
+  activeLegendGroup: null,
 };
 
 const DataLoader = (function () {
@@ -4110,8 +4089,8 @@ const DataLoader = (function () {
     非洲: "#ef4444",
     南亚: "#7c3aed",
     东南亚: "#3b82f6",
-    中亚: "#06b6d4",
-    西亚: "#8b5cf6",
+    中东: "#06b6d4",
+    欧亚: "#8b5cf6",
     大洋洲: "#f59e0b",
   };
   const incomeColors = {
@@ -4228,7 +4207,7 @@ function renderTopic3Charts() {
   const legendContainer = d3.select("#topic3-legend");
   const selectEl = d3.select("#topic3-countrySelect");
 
-  // 更新高亮国家信息面板
+  // 更新高亮国家（或地区）信息面板
   const highlightInfoEl = document.getElementById("topic3-highlight-info");
   if (Topic3Store.currentHighlights.length > 0) {
     const selectedCodes = Topic3Store.currentHighlights;
@@ -4316,7 +4295,22 @@ function renderTopic3Charts() {
     .style("fill", "#64748b")
     .text("学习调整学年 (LAYS)");
 
+  const legendItems =
+    Topic3Store.currentColorBy === "region"
+      ? Object.entries(DataLoader.regionColors)
+      : Object.entries(DataLoader.incomeColors);
+  if (
+    Topic3Store.activeLegendGroup &&
+    !legendItems.some(([label]) => label === Topic3Store.activeLegendGroup)
+  ) {
+    Topic3Store.activeLegendGroup = null;
+  }
+
   const colorFn = (d) => DataLoader.getColor(Topic3Store.currentColorBy, d);
+  const groupKey = Topic3Store.currentColorBy === "region" ? "region" : "income";
+  const activeGroup = Topic3Store.activeLegendGroup;
+  const isGroupActive = (d) => activeGroup && d[groupKey] === activeGroup;
+  const isGroupDimmed = (d) => activeGroup && d[groupKey] !== activeGroup;
 
   sG.selectAll("circle")
     .data(data)
@@ -4324,14 +4318,22 @@ function renderTopic3Charts() {
     .append("circle")
     .attr("cx", (d) => xScale(d.poverty))
     .attr("cy", (d) => yScale(d.lays))
-    .attr("r", (d) => (Topic3Store.currentHighlights.includes(d.code) ? 8 : 5))
+    .attr("r", (d) =>
+      Topic3Store.currentHighlights.includes(d.code) ? 8 : isGroupActive(d) ? 6.5 : 5,
+    )
     .attr("fill", colorFn)
-    .attr("opacity", (d) => (Topic3Store.currentHighlights.includes(d.code) ? 1 : 0.7))
+    .attr("opacity", (d) =>
+      Topic3Store.currentHighlights.includes(d.code) || isGroupActive(d)
+        ? 1
+        : isGroupDimmed(d)
+          ? 0.14
+          : 0.7,
+    )
     .attr("stroke", (d) =>
-      Topic3Store.currentHighlights.includes(d.code) ? "#102033" : "#fff",
+      Topic3Store.currentHighlights.includes(d.code) || isGroupActive(d) ? "#102033" : "#fff",
     )
     .attr("stroke-width", (d) =>
-      Topic3Store.currentHighlights.includes(d.code) ? 2 : 1,
+      Topic3Store.currentHighlights.includes(d.code) ? 2 : isGroupActive(d) ? 1.4 : 1,
     )
     .on("mouseover", function (ev, d) {
       d3.select(this).attr("r", 8).attr("opacity", 1);
@@ -4343,8 +4345,18 @@ function renderTopic3Charts() {
     .on("mousemove", moveTooltip)
     .on("mouseout", function (ev, d) {
       d3.select(this)
-        .attr("r", Topic3Store.currentHighlights.includes(d.code) ? 8 : 5)
-        .attr("opacity", Topic3Store.currentHighlights.includes(d.code) ? 1 : 0.7);
+        .attr(
+          "r",
+          Topic3Store.currentHighlights.includes(d.code) ? 8 : isGroupActive(d) ? 6.5 : 5,
+        )
+        .attr(
+          "opacity",
+          Topic3Store.currentHighlights.includes(d.code) || isGroupActive(d)
+            ? 1
+            : isGroupDimmed(d)
+              ? 0.14
+              : 0.7,
+        );
       hideTooltip();
     });
 
@@ -4353,7 +4365,7 @@ function renderTopic3Charts() {
   ).sort((a, b) => a.name.localeCompare(b.name, "zh-CN"));
   Topic3Store.countryOptions = countries;
   selectEl.html("");
-  selectEl.append("option").attr("value", "").text("-- 选择国家 --");
+  selectEl.append("option").attr("value", "").text("-- 选择国家（或地区） --");
   countries.forEach((c) => {
     const opt = selectEl.append("option").attr("value", c.code).text(c.name);
     if (Topic3Store.currentHighlights.includes(c.code)) {
@@ -4362,27 +4374,44 @@ function renderTopic3Charts() {
   });
   updateTopic3CountrySearchInput();
 
-  const legendItems =
-    Topic3Store.currentColorBy === "region"
-      ? Object.entries(DataLoader.regionColors)
-      : Object.entries(DataLoader.incomeColors);
-
   legendItems.forEach(([label, color]) => {
+    const isActiveLegend = Topic3Store.activeLegendGroup === label;
     const item = legendContainer
       .append("div")
+      .attr("class", `scatter-legend-item${isActiveLegend ? " is-active" : ""}`)
+      .attr("role", "button")
+      .attr("tabindex", "0")
+      .attr("aria-pressed", isActiveLegend ? "true" : "false")
       .style("display", "flex")
       .style("align-items", "center")
-      .style("margin-right", "20px");
+      .style("margin-right", "20px")
+      .style("cursor", "pointer")
+      .style("opacity", Topic3Store.activeLegendGroup && !isActiveLegend ? 0.36 : 1)
+      .on("click", () => {
+        Topic3Store.activeLegendGroup =
+          Topic3Store.activeLegendGroup === label ? null : label;
+        renderTopic3Charts();
+      })
+      .on("keydown", (ev) => {
+        if (ev.key !== "Enter" && ev.key !== " ") return;
+        ev.preventDefault();
+        Topic3Store.activeLegendGroup =
+          Topic3Store.activeLegendGroup === label ? null : label;
+        renderTopic3Charts();
+      });
     item
       .append("div")
+      .attr("class", "scatter-legend-dot")
       .style("width", "16px")
       .style("height", "16px")
       .style("background", color)
-      .style("margin-right", "8px");
+      .style("margin-right", "8px")
+      .style("border-color", isActiveLegend ? "#102033" : "#ffffff");
     item
       .append("span")
       .style("font-size", "12px")
-      .style("color", "#94a3b8")
+      .style("color", isActiveLegend ? "#102033" : "#64748b")
+      .style("font-weight", isActiveLegend ? "800" : "650")
       .text(label);
   });
 
@@ -4504,7 +4533,7 @@ function renderTopic3CountrySearchResults(query = "") {
   if (options.length === 0) {
     const empty = document.createElement("div");
     empty.className = "country-search-empty";
-    empty.textContent = "没有匹配国家";
+    empty.textContent = "没有匹配国家（或地区）";
     resultsEl.appendChild(empty);
     return;
   }
@@ -4723,6 +4752,7 @@ const topic3ColorBy = document.getElementById("topic3-colorBy");
 if (topic3ColorBy) {
   topic3ColorBy.addEventListener("change", function (e) {
     Topic3Store.currentColorBy = e.target.value;
+    Topic3Store.activeLegendGroup = null;
     renderTopic3Charts();
   });
 }
